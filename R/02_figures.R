@@ -185,15 +185,18 @@ fig2 <- function() {
     geom_vline(xintercept = base, linetype = "dashed",
                colour = INK, linewidth = 0.4) +
     geom_vline(xintercept = WTP, colour = GREEN, linewidth = 0.5) +
-    annotate("text", x = base - 65, y = nrow(d) + 0.75, hjust = 1, size = 2.6,
+    ## Labels are stacked vertically (not offset left/right of their line) so
+    ## they never collide regardless of how close WTP and the base case sit
+    ## to one another on the x-axis.
+    annotate("text", x = base, y = nrow(d) + 1.35, hjust = 0.5, size = 2.6,
              fontface = "bold", colour = INK,
              label = sprintf("base case US$%s", format(round(base), big.mark = ","))) +
-    annotate("text", x = WTP + 75, y = nrow(d) + 0.75, hjust = 0, size = 2.6,
+    annotate("text", x = WTP + 40, y = nrow(d) + 0.55, hjust = 0, size = 2.6,
              fontface = "bold", colour = GREEN,
-             label = sprintf("willingness to pay\n1 x GDP per capita = US$%s",
+             label = sprintf("willingness to pay = 1 x GDP per capita = US$%s",
                              format(WTP, big.mark = ","))) +
     scale_y_continuous(breaks = seq_len(nrow(d)), labels = levels(d$parameter),
-                       expand = expansion(add = c(0.6, 1.4))) +
+                       expand = expansion(add = c(0.6, 2.0))) +
     scale_x_continuous(labels = scales::comma, expand = expansion(mult = 0.01)) +
     coord_cartesian(xlim = c(900, 4100)) +
     labs(x = "Cost per maternal death detected and cause-assigned (2026 US$)",

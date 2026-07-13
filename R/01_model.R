@@ -219,6 +219,19 @@ p_ce_total <- mean(psa_deff * params$wtp - psa_cost_total > 0)
 inmb_govt  <- mean(psa_deff * params$wtp - psa_cost_govt)
 inmb_total <- mean(psa_deff * params$wtp - psa_cost_total)
 
+## Since the willingness-to-pay convention itself spans 1x-3x GDP per capita
+## (see Methods), report probability-cost-effective at each exact multiple,
+## not just the primary (1x) threshold -- so the reader sees the full range
+## the literature actually contemplates, not just the conservative end.
+gdp_multiples   <- c(1, 2, 3)
+wtp_by_multiple <- gdp_multiples * params$gdp_pc
+p_ce_govt_by_multiple  <- vapply(wtp_by_multiple,
+  function(w) mean(psa_deff * w - psa_cost_govt  > 0), numeric(1))
+p_ce_total_by_multiple <- vapply(wtp_by_multiple,
+  function(w) mean(psa_deff * w - psa_cost_total > 0), numeric(1))
+names(p_ce_govt_by_multiple)  <- paste0(gdp_multiples, "x")
+names(p_ce_total_by_multiple) <- paste0(gdp_multiples, "x")
+
 psa <- data.frame(
   d_eff      = psa_deff,
   cost_govt  = psa_cost_govt,
@@ -345,6 +358,13 @@ if (sys.nframe() == 0L || identical(environment(), globalenv())) {
   cat(sprintf("    INMB, economic   US$%s per year\n",
               format(round(inmb_total), big.mark = ",")))
 
+  cat("\n  P(cost-effective) across the full 1x-3x GDP per capita convention:\n")
+  for (i in seq_along(gdp_multiples)) {
+    cat(sprintf("    %dx GDP (US$%s)   State %5.1f%%   economic %5.1f%%\n",
+                gdp_multiples[i], format(round(wtp_by_multiple[i]), big.mark = ","),
+                100 * p_ce_govt_by_multiple[i], 100 * p_ce_total_by_multiple[i]))
+  }
+
   cat("\n================ BREAK-EVEN ANALYSIS ================\n")
   cat(sprintf("  The base-case ICER (US$%s) EXCEEDS the threshold (US$%s).\n",
               format(round(BC$icer_govt_usd), big.mark = ","),
@@ -368,6 +388,9 @@ saveRDS(list(params = params, base = BC, dsa = dsa, psa = psa,
              wtp_grid = wtp_grid, ceac_govt = ceac_govt, ceac_total = ceac_total,
              p_ce_govt = p_ce_govt, p_ce_total = p_ce_total,
              inmb_govt = inmb_govt, inmb_total = inmb_total,
+             wtp_by_multiple = wtp_by_multiple,
+             p_ce_govt_by_multiple = p_ce_govt_by_multiple,
+             p_ce_total_by_multiple = p_ce_total_by_multiple,
              breakeven_deaths = breakeven_deaths, breakeven_cost = breakeven_cost,
              cost_cut_pct = cost_cut_pct, wtp_50 = wtp_50,
              illustrative = illustrative),
