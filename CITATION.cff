@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: KASSEP cost-effectiveness analysis
+message: If you use this software, please cite it as below.
+type: software
+authors:
+  - family-names: "Musa"
+    given-names: "Baba Maiyaki"
+    affiliation: "Africa Centre of Excellence for Population Health and Policy, Bayero University Kano"
+repository-code: "https://github.com/babamaiyaki200016-prog/kassep-cea"
+license: MIT
+version: 1.0.0
+date-released: 2026-07-13

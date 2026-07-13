@@ -1,0 +1,33 @@
+{
+  "epidemiology_unweighted": {
+    "households_enumerated": 41835,
+    "mean_household_size": 6.02,
+    "population_under_surveillance": 251847,
+    "deliveries": 11106,
+    "stillbirths": 1178,
+    "live_births": 9928,
+    "maternal_deaths_cause_assigned": 93,
+    "mmr_per_100k": 936.7,
+    "lgas": 44,
+    "note": "Stillbirths were counted but did NOT receive verbal/social autopsy."
+  },
+  "costs_ngn_per_year": {
+    "Personnel and field workforce": 171600000,
+    "Field operations and VASA logistics": 23266000,
+    "Technology and data infrastructure": 7000000,
+    "Training and capacity building": 9000000,
+    "Vehicle running costs and upkeep": 4700000
+  },
+  "vehicle_capital_ngn": 80000000,
+  "vehicle_useful_life_years": 5,
+  "transition_cost_ngn": 2000000,
+  "establishment_investment_usd": 610112,
+  "establishment_useful_life_years": 5,
+  "exchange_rate_ngn_per_usd": 1380.0,
+  "gdp_per_capita_usd": 1223.0,
+  "wtp_multiple": 1.0,
+  "wtp_threshold_usd": 1223.0,
+  "discount_rate": 0.05,
+  "p_cause_assigned_kassep": 1.00,
+  "p_cause_assigned_status_quo": 0.00
+}

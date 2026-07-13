@@ -1,0 +1,12 @@
+Package: kassepcea
+Title: Cost-Effectiveness of the KASSEP Maternal Mortality Surveillance System
+Version: 1.0.0
+Authors@R: person("Baba Maiyaki", "Musa", role = c("aut", "cre"))
+Description: Decision-analytic model, deterministic and probabilistic sensitivity
+    analyses, and publication figures for the cost-effectiveness analysis of a
+    community-based sample registration system with verbal and social autopsy in
+    Kano State, Nigeria.
+Depends: R (>= 4.1)
+Imports: ggplot2, scales, jsonlite
+License: MIT + file LICENSE
+Encoding: UTF-8
