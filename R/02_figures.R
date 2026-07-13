@@ -167,20 +167,31 @@ fig2 <- function() {
   d$parameter <- factor(d$parameter, levels = rev(d$parameter))
   base <- BC$icer_govt_usd
 
+  ## `low`/`high` are aligned to low_label/high_label (the parameter's own
+  ## stated low/high value), NOT to which side of the base case is cheaper
+  ## -- some parameters (detection rate, ascertainment completeness) have
+  ## an inverse relationship with cost, so their low value can produce the
+  ## *costlier* ICER. Determine the cheap/costly side per row from the
+  ## actual computed ICERs, carrying the correct label along with each.
+  d$cheap_icer   <- pmin(d$low, d$high)
+  d$costly_icer  <- pmax(d$low, d$high)
+  d$cheap_label  <- ifelse(d$low <= d$high, d$low_label, d$high_label)
+  d$costly_label <- ifelse(d$low <= d$high, d$high_label, d$low_label)
+
   ggplot(d) +
     geom_rect(aes(ymin = as.numeric(parameter) - 0.32,
                   ymax = as.numeric(parameter) + 0.32,
-                  xmin = pmin(low, base), xmax = base),
+                  xmin = cheap_icer, xmax = base),
               fill = TEAL, colour = "white", linewidth = 0.25) +
     geom_rect(aes(ymin = as.numeric(parameter) - 0.32,
                   ymax = as.numeric(parameter) + 0.32,
-                  xmin = base, xmax = pmax(high, base)),
+                  xmin = base, xmax = costly_icer),
               fill = RUST, colour = "white", linewidth = 0.25) +
-    geom_text(aes(x = pmin(low, high) - 55, y = as.numeric(parameter),
-                  label = ifelse(low < high, low_label, high_label)),
+    geom_text(aes(x = cheap_icer - 55, y = as.numeric(parameter),
+                  label = cheap_label),
               hjust = 1, size = 2.4, colour = TEAL) +
-    geom_text(aes(x = pmax(low, high) + 55, y = as.numeric(parameter),
-                  label = ifelse(low < high, high_label, low_label)),
+    geom_text(aes(x = costly_icer + 55, y = as.numeric(parameter),
+                  label = costly_label),
               hjust = 0, size = 2.4, colour = RUST) +
     geom_vline(xintercept = base, linetype = "dashed",
                colour = INK, linewidth = 0.4) +

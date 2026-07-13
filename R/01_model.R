@@ -143,12 +143,20 @@ dsa <- data.frame(
                 "8 yr", "-25%", "N60m", "0%", "-25%", "-25%"),
   high_label = c("150", "+25%", "N1,200", "1.00", "0",
                  "3 yr", "+25%", "N100m", "10%", "+25%", "+25%"),
+  ## `low` must always be the ICER evaluated at the parameter's LOW_LABEL
+  ## value, and `high` at its HIGH_LABEL value -- for cost-type parameters
+  ## that also happens to be the cheaper/costlier ICER respectively, but for
+  ## parameters with an INVERSE relationship to cost (detection rate,
+  ## completeness of ascertainment, status-quo ascertainment) the low
+  ## parameter value produces the *costlier* ICER. The plotting code (not
+  ## this ordering) is responsible for figuring out which side of the base
+  ## case each one falls on; this vector must stay aligned to the labels.
   low = c(
-    icer(deaths = 150),
+    icer(deaths = 45),
     icer(cost = scale_one("Personnel and field workforce", 0.75)),
     icer(fx = 1600),
-    icer(p_vasa = 1.00),
-    icer(p_crvs = 0.00),
+    icer(p_vasa = 0.80),
+    icer(p_crvs = 0.10),
     icer(veh_life = 8),
     icer(cost = scale_one("Field operations and VASA logistics", 0.75)),
     icer(vehicle = 60000000),
@@ -157,11 +165,11 @@ dsa <- data.frame(
     icer(cost = scale_one("Technology and data infrastructure", 0.75))
   ),
   high = c(
-    icer(deaths = 45),
+    icer(deaths = 150),
     icer(cost = scale_one("Personnel and field workforce", 1.25)),
     icer(fx = 1200),
-    icer(p_vasa = 0.80),
-    icer(p_crvs = 0.10),
+    icer(p_vasa = 1.00),
+    icer(p_crvs = 0.00),
     icer(veh_life = 3),
     icer(cost = scale_one("Field operations and VASA logistics", 1.25)),
     icer(vehicle = 100000000),
